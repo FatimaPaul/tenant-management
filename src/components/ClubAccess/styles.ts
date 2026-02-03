@@ -2,13 +2,13 @@ import type { SxProps, Theme } from "@mui/material/styles";
 import { colors } from "../../theme/colors";
 
 export const root: SxProps<Theme> = {
-  maxHeight: "65%",
+  maxHeight: "75%",
   flex: 1,
   display: "flex",
   flexDirection: "column",
   gap: 0,
   bgcolor: "#C7DBE540",
-  margin: "40px",
+  margin: "25px",
   borderRadius: "32px",
   // height: "80vh",
 };
@@ -150,7 +150,7 @@ export const tableContainer: SxProps<Theme> = {
   overflowY: "auto",
   my: "30",
   px: "3px",
-  maxHeight: "300px",
+  maxHeight: "100%",
   "& table": {
     borderCollapse: "separate",
     borderSpacing: "0px 12px",
