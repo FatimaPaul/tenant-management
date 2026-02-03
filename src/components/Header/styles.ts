@@ -1,4 +1,5 @@
 import type { SxProps, Theme } from "@mui/material/styles";
+import { colors } from "../../theme/colors";
 
 export const root: SxProps<Theme> = {
   px: 3,
@@ -12,8 +13,25 @@ export const root: SxProps<Theme> = {
 };
 
 export const searchField: SxProps<Theme> = {
+  ml: "auto",
   minWidth: 280,
-  "& .MuiOutlinedInput-root": { borderRadius: 2 },
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "12px",
+    height: "40px",
+    width: "360px",
+  },
+};
+
+export const sideIcons: SxProps<Theme> = {
+  bgcolor: colors.iconBg,
+  width: "40px",
+  height: "40px",
+  p: "8px",
+  borderRadius: "8px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: colors.blue,
 };
 
 export const searchIcon: SxProps<Theme> = {
@@ -22,6 +40,7 @@ export const searchIcon: SxProps<Theme> = {
 };
 
 export const spacer: SxProps<Theme> = {
+  display: "none",
   flex: 1,
 };
 
@@ -32,6 +51,7 @@ export const userBlock: SxProps<Theme> = {
 };
 
 export const avatar: SxProps<Theme> = {
-  width: 36,
-  height: 36,
+  borderRadius: "8px",
+  width: "40px",
+  height: "40px",
 };

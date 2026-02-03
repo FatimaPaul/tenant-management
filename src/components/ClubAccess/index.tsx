@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -15,7 +14,6 @@ import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
-import { colors } from "../../theme/colors";
 import {
   useDashboard,
   TENANTS,
@@ -79,7 +77,11 @@ export function ClubAccess() {
 
         <Box sx={headerActions}>
           <ConnectionStatusIndicator />
-          <Button variant="contained" onClick={() => setAddMemberOpen(true)} sx={addMemberButton}>
+          <Button
+            variant="contained"
+            onClick={() => setAddMemberOpen(true)}
+            sx={addMemberButton}
+          >
             ADD MEMBER
           </Button>
         </Box>
@@ -109,9 +111,10 @@ export function ClubAccess() {
           </Paper>
           <Box
             sx={{
-              background: `linear-gradient(-90deg, ${colors.gradientLight} 0%, ${colors.white} 100%)`,
+              backgroundColor: "#F1F7F9",
               width: "100%",
               height: "30px",
+              borderTopRightRadius: "10px",
             }}
           ></Box>
         </Box>
@@ -121,18 +124,6 @@ export function ClubAccess() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           sx={searchField}
-        //InputProps={{
-        //  startAdornment: (
-        //    <InputAdornment position="start">
-        //      <Box
-        //        component="img"
-        //        src="/assets/search.png"
-        //        alt=""
-        //        sx={searchIcon}
-        //      />
-        //    </InputAdornment>
-        //  ),
-        //}}
         />
 
         <Paper sx={tablePaper}>
@@ -157,7 +148,7 @@ export function ClubAccess() {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody sx={tableContainer}>
                 {filteredCheckIns.map((row, index) => (
                   <TableRow
                     key={row.eventId}
