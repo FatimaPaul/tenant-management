@@ -1,6 +1,8 @@
-# Connectivity Error
+# if it gives Connectivity Issue 
 
-please run 
+please run this in vite.config.ts
+
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
