@@ -4,7 +4,7 @@ import { colors } from "../../theme/colors";
 export const root: SxProps<Theme> = {
   px: 3,
   py: 2,
-  bgcolor: "background.paper",
+  bgcolor: "#C7DBE540",
   boxShadow: 1,
   display: "flex",
   alignItems: "center",

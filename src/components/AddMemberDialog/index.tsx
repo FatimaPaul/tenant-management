@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { useDashboard } from '../../context/DashboardContext';
+import { useState } from "react";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import { useDashboard } from "../../context/DashboardContext";
 import {
   FACILITIES,
   modalBox,
@@ -22,36 +22,42 @@ import {
   addButton,
   errorText,
   selectPlaceholder,
-} from './styles';
+  outlineInput,
+} from "./styles";
 
 export function AddMemberDialog() {
   const { addMemberOpen, setAddMemberOpen, addMember } = useDashboard();
-  const [memberId, setMemberId] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [facility, setFacility] = useState('');
-  const [error, setError] = useState('');
+  const [memberId, setMemberId] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [facility, setFacility] = useState("");
+  const [error, setError] = useState("");
 
   const handleClose = () => {
     setAddMemberOpen(false);
-    setMemberId('');
-    setName('');
-    setEmail('');
-    setFacility('');
-    setError('');
+    setMemberId("");
+    setName("");
+    setEmail("");
+    setFacility("");
+    setError("");
   };
 
   const handleAdd = async () => {
     if (!memberId.trim() || !name.trim() || !facility) {
-      setError('Member #, Member Name, and Facility are required.');
+      setError("Member #, Member Name, and Facility are required.");
       return;
     }
-    setError('');
+    setError("");
     try {
-      await addMember({ memberId: memberId.trim(), name: name.trim(), email: email.trim(), facility });
+      await addMember({
+        memberId: memberId.trim(),
+        name: name.trim(),
+        email: email.trim(),
+        facility,
+      });
       handleClose();
     } catch {
-      setError('Failed to add member. Please try again.');
+      setError("Failed to add member. Please try again.");
     }
   };
 
@@ -72,20 +78,26 @@ export function AddMemberDialog() {
         <Box component="form" sx={formBox} id="add-member-modal-description">
           <FormControl sx={formControl}>
             <Typography component="label" sx={inputLabel} htmlFor="member-id">
-              Member# <Box component="span" sx={requiredAsterisk}>*</Box>
+              Member#{" "}
+              <Box component="span" sx={requiredAsterisk}>
+                *
+              </Box>
             </Typography>
             <OutlinedInput
               id="member-id"
               placeholder="John Doe"
               value={memberId}
               onChange={(e) => setMemberId(e.target.value)}
-              sx={{ mt: 1 }}
+              sx={outlineInput}
             />
           </FormControl>
 
           <FormControl sx={formControl}>
             <Typography component="label" sx={inputLabel} htmlFor="facility">
-              Facility <Box component="span" sx={requiredAsterisk}>*</Box>
+              Facility{" "}
+              <Box component="span" sx={requiredAsterisk}>
+                *
+              </Box>
             </Typography>
             <Select
               id="facility"
@@ -94,29 +106,37 @@ export function AddMemberDialog() {
               displayEmpty
               renderValue={(selected) => {
                 if (!selected) {
-                  return <Box component="span" sx={selectPlaceholder}>Select</Box>;
+                  return (
+                    <Box component="span" sx={selectPlaceholder}>
+                      Select
+                    </Box>
+                  );
                 }
                 return selected;
               }}
-              sx={{ mt: 1 }}
+              sx={outlineInput}
               input={<OutlinedInput />}
             >
               {FACILITIES.map((f) => (
-                <MenuItem key={f} value={f}>{f}</MenuItem>
+                <MenuItem key={f} value={f}>
+                  {f}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
 
           <FormControl sx={formControl}>
             <Typography component="label" sx={inputLabel} htmlFor="member-name">
-              Member name <Box component="span" sx={requiredAsterisk}>*</Box>
+              Member name{" "}
+              <Box component="span" sx={requiredAsterisk}>
+                *
+              </Box>
             </Typography>
             <OutlinedInput
               id="member-name"
-              placeholder="Jane Doe"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              sx={{ mt: 1 }}
+              sx={outlineInput}
             />
           </FormControl>
 
@@ -129,13 +149,15 @@ export function AddMemberDialog() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              sx={{ mt: 1 }}
+              sx={outlineInput}
             />
           </FormControl>
         </Box>
 
         {error && (
-          <Typography color="error" variant="body2" sx={errorText}>{error}</Typography>
+          <Typography color="error" variant="body2" sx={errorText}>
+            {error}
+          </Typography>
         )}
 
         <Box sx={footerBox}>
