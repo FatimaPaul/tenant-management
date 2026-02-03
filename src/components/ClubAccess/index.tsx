@@ -18,7 +18,7 @@ import {
   TENANTS,
   type TenantId,
 } from "../../context/DashboardContext";
-import { ConnectionStatusIndicator } from "../ConnectionStatusIndicator";
+// import { ConnectionStatusIndicator } from "../ConnectionStatusIndicator";
 import {
   root,
   headerText,
