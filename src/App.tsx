@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import Box from '@mui/material/Box';
-import { Sidebar } from './components/Sidebar/index';
-import { Header } from './components/Header/index';
-import { ClubAccess } from './components/ClubAccess/index';
-import { MemberProfileDialog } from './components/MemberProfileDialog/index';
-import { AddMemberDialog } from './components/AddMemberDialog/index';
-import { DashboardProvider, useDashboard } from './context/DashboardContext';
+import { useEffect } from "react";
+import Box from "@mui/material/Box";
+import { Sidebar } from "./components/Sidebar/index";
+import { Header } from "./components/Header/index";
+import { ClubAccess } from "./components/ClubAccess/index";
+import { MemberProfileDialog } from "./components/MemberProfileDialog/index";
+import { AddMemberDialog } from "./components/AddMemberDialog/index";
+import { DashboardProvider, useDashboard } from "./context/DashboardContext";
 
 function AppContent() {
   const { tenantId, fetchCheckIns, connectWebSocket } = useDashboard();
@@ -16,9 +16,18 @@ function AppContent() {
   }, [tenantId, fetchCheckIns, connectWebSocket]);
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', fontFamily: 'Poppins, sans-serif' }}>
+    <Box
+      sx={{
+        display: "flex",
+        minHeight: "100vh",
+        fontFamily: "Poppins, sans-serif",
+        background: "linear-gradient(-190deg, #f8fbfc40, #bee4e4)",
+      }}
+    >
       <Sidebar />
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+      <Box
+        sx={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}
+      >
         <Header />
         <ClubAccess />
       </Box>

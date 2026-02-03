@@ -2,6 +2,7 @@ import type { SxProps, Theme } from "@mui/material/styles";
 import { colors } from "../../theme/colors";
 
 export const root: SxProps<Theme> = {
+  maxHeight: "65%",
   flex: 1,
   display: "flex",
   flexDirection: "column",
@@ -9,7 +10,7 @@ export const root: SxProps<Theme> = {
   bgcolor: "#C7DBE540",
   margin: "40px",
   borderRadius: "32px",
-  height: "calc(100vh - 80px)",
+  // height: "80vh",
 };
 
 export const headerText: SxProps<Theme> = {
@@ -61,6 +62,7 @@ export const tabsWrapper: SxProps<Theme> = {
 };
 
 export const contentPaper: SxProps<Theme> = {
+  maxHeight: "100%",
   bgcolor: colors.white,
   borderBottomLeftRadius: "20px",
   borderBottomRightRadius: "20px",
@@ -91,7 +93,7 @@ export const tabs: SxProps<Theme> = {
 };
 
 export const tab = (selected: boolean): SxProps<Theme> => ({
-  fontSize: "18px",
+  fontSize: "90%",
   textTransform: "none",
   fontWeight: 500,
   minHeight: "45px",
@@ -133,6 +135,7 @@ export const searchIcon: SxProps<Theme> = {
 
 export const tablePaper: SxProps<Theme> = {
   width: "90%",
+  maxHeight: "100%",
   flex: 1,
   minHeight: 0,
   display: "flex",
@@ -140,7 +143,6 @@ export const tablePaper: SxProps<Theme> = {
   borderRadius: "16px",
   boxShadow: 0,
   backgroundColor: "#F1F7F9",
-  padding: "16px 24px",
 };
 
 export const tableContainer: SxProps<Theme> = {
@@ -156,8 +158,10 @@ export const tableContainer: SxProps<Theme> = {
 
   "&::-webkit-scrollbar": {
     mt: "40px",
+    // mb: "40px",
     px: 2,
     width: "10px",
+    borderBottomLeftRadius: 0,
   },
 
   "&::-webkit-scrollbar-track": {
@@ -165,6 +169,7 @@ export const tableContainer: SxProps<Theme> = {
     backgroundColor: "#F1F7F9",
     px: 2,
     borderRadius: "16px",
+    borderBottomLeftRadius: 0,
   },
 
   "&::-webkit-scrollbar-thumb": {
@@ -192,7 +197,7 @@ export const tableRow = (index: number): SxProps<Theme> => ({
     backgroundColor: index % 2 === 0 ? colors.white : colors.tableRowAlt,
     padding: "10px 24px",
     borderBottom: "none",
-    fontSize: "18px",
+    fontSize: "90%",
   },
 
   "& td:first-of-type": {
@@ -206,6 +211,6 @@ export const tableRow = (index: number): SxProps<Theme> => ({
   },
 });
 
-export const statusChip: SxProps<Theme> = {
-  fontWeight: 600,
-};
+export const status = (status: string): SxProps<Theme> => ({
+  color: status == "ACTIVE" ? "#01B801" : "#FF4646",
+});

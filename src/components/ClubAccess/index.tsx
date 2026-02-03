@@ -13,7 +13,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
 import {
   useDashboard,
   TENANTS,
@@ -36,7 +35,7 @@ import {
   tableContainer,
   tableHeaderRow,
   tableRow,
-  statusChip,
+  status,
 } from "./styles";
 
 const tabLabels: Record<TenantId, string> = {
@@ -159,15 +158,16 @@ export function ClubAccess() {
                     <TableCell>{row.memberId}</TableCell>
                     <TableCell>{row.name}</TableCell>
                     <TableCell>{row.facility}</TableCell>
+
+                    <TableCell sx={status(row.status)}>{row.status}</TableCell>
                     <TableCell>
-                      <Chip
-                        label={row.status}
-                        size="small"
-                        color={row.status === "ACTIVE" ? "success" : "error"}
-                        sx={statusChip}
-                      />
+                      {new Date(row.timestamp).toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: true,
+                      })}
                     </TableCell>
-                    <TableCell>{row.timestamp}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
