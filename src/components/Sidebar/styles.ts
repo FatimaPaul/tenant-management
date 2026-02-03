@@ -28,6 +28,7 @@ export const sidebarWrapper = (open: boolean): SxProps<Theme> => ({
   transition: "width 0.3s ease-in-out",
   p: 0,
   m: 0,
+  zIndex: 10,
   //outline: '2px solid red',
 });
 
@@ -75,15 +76,16 @@ export const logoImage = (open: boolean): SxProps<Theme> => ({
 
 export const toggleButton: SxProps<Theme> = {
   position: "absolute",
-  right: 0,
+  right: 3,
   top: LOGO_HEIGHT,
   transform: "translateX(50%)",
-  width: "30px",
+  width: "40px",
   height: "70px",
   borderRadius: "-10px",
   bgcolor: colors.blue,
+  paddingLeft: "20px",
   //   py: "56px",
-  zIndex: 10,
+  zIndex: -1,
   "&:hover": { bgcolor: colors.blue },
   "& .MuiSvgIcon-root": { fontSize: 16, color: "grey.700" },
 };

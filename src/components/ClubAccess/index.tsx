@@ -75,7 +75,7 @@ export function ClubAccess() {
         <Typography sx={headerText}>CLUB ACCESS</Typography>
 
         <Box sx={headerActions}>
-          <ConnectionStatusIndicator />
+          {/* <ConnectionStatusIndicator /> */}
           <Button
             variant="contained"
             onClick={() => setAddMemberOpen(true)}
