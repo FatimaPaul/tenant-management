@@ -6,13 +6,17 @@ import {
   useRef,
   useState,
   type ReactNode,
-} from 'react';
-import type { CheckInEvent, MemberProfile, ConnectionStatus } from '../types';
+} from "react";
+import type { CheckInEvent, MemberProfile, ConnectionStatus } from "../types";
 
-const API_BASE = '/api';
-const WS_BASE = `${typeof location !== 'undefined' && location.protocol === 'https:' ? 'wss:' : 'ws:'}//${typeof location !== 'undefined' ? location.host : ''}`;
+const API_BASE = "/api";
+const WS_BASE = `${
+  typeof location !== "undefined" && location.protocol === "https:"
+    ? "wss:"
+    : "ws:"
+}//${typeof location !== "undefined" ? location.host : ""}`;
 
-export const TENANTS = ['clubA', 'clubB', 'clubC'] as const;
+export const TENANTS = ["clubA", "clubB", "clubC"] as const;
 export type TenantId = (typeof TENANTS)[number];
 
 interface DashboardState {
@@ -35,16 +39,21 @@ interface DashboardContextValue extends DashboardState {
   fetchMemberProfile: (memberId: string) => Promise<void>;
   connectWebSocket: () => void;
   disconnectWebSocket: () => void;
-  addMember: (data: { memberId: string; name: string; email: string; facility: string }) => Promise<void>;
+  addMember: (data: {
+    memberId: string;
+    name: string;
+    email: string;
+    facility: string;
+  }) => Promise<void>;
 }
 
 const initialState: DashboardState = {
-  tenantId: 'clubA',
+  tenantId: "clubA",
   checkIns: [],
-  searchQuery: '',
+  searchQuery: "",
   selectedMemberId: null,
   memberProfile: null,
-  connectionStatus: 'disconnected',
+  connectionStatus: "disconnected",
   addMemberOpen: false,
 };
 
@@ -54,9 +63,11 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<DashboardState>(initialState);
   const wsRef = useRef<WebSocket | null>(null);
   const tenantIdRef = useRef<TenantId>(state.tenantId);
-  const connectWebSocketRef = useRef<() => void>(() => { });
+  const connectWebSocketRef = useRef<() => void>(() => {});
   const selectedMemberIdRef = useRef<string | null>(state.selectedMemberId);
-  const fetchMemberProfileRef = useRef<(memberId: string) => Promise<void>>(async () => { });
+  const fetchMemberProfileRef = useRef<(memberId: string) => Promise<void>>(
+    async () => {}
+  );
 
   tenantIdRef.current = state.tenantId;
   selectedMemberIdRef.current = state.selectedMemberId;
@@ -66,7 +77,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     if (ws) {
       ws.close();
       wsRef.current = null;
-      setState((s) => ({ ...s, connectionStatus: 'disconnected' }));
+      setState((s) => ({ ...s, connectionStatus: "disconnected" }));
     }
   }, []);
 
@@ -75,7 +86,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       if (event.tenantId !== s.tenantId) return s;
       return {
         ...s,
-        checkIns: [event, ...s.checkIns.filter((c) => c.eventId !== event.eventId)],
+        checkIns: [
+          event,
+          ...s.checkIns.filter((c) => c.eventId !== event.eventId),
+        ],
       };
     });
     if (selectedMemberIdRef.current === event.memberId) {
@@ -89,24 +103,26 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     const wsUrl = `${WS_BASE}/ws?tenantId=${tenantId}`;
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
-    setState((s) => ({ ...s, connectionStatus: 'reconnecting' }));
+    setState((s) => ({ ...s, connectionStatus: "reconnecting" }));
 
-    ws.onopen = () => setState((s) => ({ ...s, connectionStatus: 'connected' }));
+    ws.onopen = () =>
+      setState((s) => ({ ...s, connectionStatus: "connected" }));
     ws.onclose = () => {
       wsRef.current = null;
-      setState((s) => ({ ...s, connectionStatus: 'disconnected' }));
+      setState((s) => ({ ...s, connectionStatus: "disconnected" }));
       setTimeout(() => {
         if (tenantIdRef.current === tenantId && !wsRef.current) {
           connectWebSocketRef.current();
         }
       }, 2000);
     };
-    ws.onerror = () => setState((s) => ({ ...s, connectionStatus: 'disconnected' }));
+    ws.onerror = () =>
+      setState((s) => ({ ...s, connectionStatus: "disconnected" }));
     ws.onmessage = (ev) => {
       try {
         const { type, event: evt } = JSON.parse(ev.data as string);
-        if (type === 'checkin' && evt) prependCheckIn(evt);
-      } catch { }
+        if (type === "checkin" && evt) prependCheckIn(evt);
+      } catch {}
     };
   }, [state.tenantId, disconnectWebSocket, prependCheckIn]);
 
@@ -117,10 +133,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     setState((s) => ({
       ...s,
       checkIns: [],
-      searchQuery: '',
+      searchQuery: "",
       selectedMemberId: null,
       memberProfile: null,
-      connectionStatus: 'disconnected',
+      connectionStatus: "disconnected",
     }));
   }, [disconnectWebSocket]);
 
@@ -132,12 +148,11 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     [resetOnTenantSwitch]
   );
 
-
   const fetchCheckIns = useCallback(async () => {
     const tenantId = state.tenantId;
     try {
       const res = await fetch(`${API_BASE}/checkins?tenantId=${tenantId}`);
-      if (!res.ok) throw new Error('Failed to fetch check-ins');
+      if (!res.ok) throw new Error("Failed to fetch check-ins");
       const data: CheckInEvent[] = await res.json();
       setState((s) => (s.tenantId === tenantId ? { ...s, checkIns: data } : s));
     } catch {
@@ -149,14 +164,22 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     async (memberId: string) => {
       const tenantId = state.tenantId;
       try {
-        const res = await fetch(`${API_BASE}/members/${memberId}?tenantId=${tenantId}`);
-        if (!res.ok) throw new Error('Member not found');
+        const res = await fetch(
+          `${API_BASE}/members/${memberId}?tenantId=${tenantId}`
+        );
+        if (!res.ok) throw new Error("Member not found");
         const profile: MemberProfile = await res.json();
         setState((s) =>
-          s.tenantId === tenantId ? { ...s, memberProfile: profile, selectedMemberId: memberId } : s
+          s.tenantId === tenantId
+            ? { ...s, memberProfile: profile, selectedMemberId: memberId }
+            : s
         );
       } catch {
-        setState((s) => (s.tenantId === tenantId ? { ...s, memberProfile: null, selectedMemberId: null } : s));
+        setState((s) =>
+          s.tenantId === tenantId
+            ? { ...s, memberProfile: null, selectedMemberId: null }
+            : s
+        );
       }
     },
     [state.tenantId]
@@ -165,21 +188,34 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   fetchMemberProfileRef.current = fetchMemberProfile;
 
   const addMember = useCallback(
-    async (data: { memberId: string; name: string; email: string; facility: string }) => {
+    async (data: {
+      memberId: string;
+      name: string;
+      email: string;
+      facility: string;
+    }) => {
       const tenantId = state.tenantId;
       const res = await fetch(`${API_BASE}/checkins`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           tenantId,
           memberId: data.memberId,
           name: data.name,
           email: data.email,
           facility: data.facility,
-          status: 'ACTIVE',
+          status: "ACTIVE",
         }),
       });
-      if (!res.ok) throw new Error('Failed to add member');
+      if (!res.ok) {
+        const errorData = await res
+          .json()
+          .catch(() => ({ error: "Failed to add member" }));
+        throw new Error(
+          errorData.error ||
+            `Failed to add member: ${res.status} ${res.statusText}`
+        );
+      }
       const event: CheckInEvent = await res.json();
       prependCheckIn(event);
       setState((s) => ({ ...s, addMemberOpen: false }));
@@ -191,9 +227,12 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     ...state,
     setTenantId,
     setSearchQuery: (q) => setState((s) => ({ ...s, searchQuery: q })),
-    setSelectedMemberId: (id) => setState((s) => ({ ...s, selectedMemberId: id })),
-    setMemberProfile: (profile) => setState((s) => ({ ...s, memberProfile: profile })),
-    setAddMemberOpen: (open) => setState((s) => ({ ...s, addMemberOpen: open })),
+    setSelectedMemberId: (id) =>
+      setState((s) => ({ ...s, selectedMemberId: id })),
+    setMemberProfile: (profile) =>
+      setState((s) => ({ ...s, memberProfile: profile })),
+    setAddMemberOpen: (open) =>
+      setState((s) => ({ ...s, addMemberOpen: open })),
     fetchCheckIns,
     fetchMemberProfile,
     connectWebSocket,
@@ -201,11 +240,16 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     addMember,
   };
 
-  return <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>;
+  return (
+    <DashboardContext.Provider value={value}>
+      {children}
+    </DashboardContext.Provider>
+  );
 }
 
 export function useDashboard(): DashboardContextValue {
   const ctx = useContext(DashboardContext);
-  if (!ctx) throw new Error('useDashboard must be used within DashboardProvider');
+  if (!ctx)
+    throw new Error("useDashboard must be used within DashboardProvider");
   return ctx;
 }
